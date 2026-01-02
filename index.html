@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>SasankaWrites | Notes — Coming Soon</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <style>
+    /* --------------------
+       THEME VARIABLES
+    -------------------- */
+    :root {
+      --bg: #f5f6fa;
+      --card: #ffffff;
+      --text: #121212;
+      --muted: #666;
+      --accent: #4f8cff;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f0f12;
+      --card: #16161d;
+      --text: #eaeaf0;
+      --muted: #9a9aa5;
+      --accent: #4f8cff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #e8ebff, var(--bg));
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    [data-theme="dark"] body {
+      background: radial-gradient(circle at top, #1a1a25, var(--bg));
+    }
+
+    .card {
+      background: var(--card);
+      width: 100%;
+      max-width: 420px;
+      padding: 32px 28px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      position: relative;
+      transition: background 0.3s ease;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .tagline {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, #ccc, transparent);
+      margin: 26px 0;
+    }
+
+    [data-theme="dark"] .divider {
+      background: linear-gradient(to right, transparent, #2a2a35, transparent);
+    }
+
+    .coming {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .time-box {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      padding: 12px 6px;
+    }
+
+    [data-theme="dark"] .time-box {
+      background: #1d1d27;
+    }
+
+    .time {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    footer {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      🌙
+    </button>
+
+    <div class="logo">Sasanka<span>Notes</span></div>
+    <div class="tagline">
+      A focused space for notes, clarity, and structured learning.<br />
+      Built in silence. Released with intent.
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="coming">Coming Soon</div>
+    <div class="sub">Notes. Concepts. Exam-ready clarity.</div>
+
+    <div class="countdown">
+      <div class="time-box">
+        <div class="time" id="days">--</div>
+        <div class="label">Days</div>
+      </div>
+      <div class="time-box">
+        <div class="time" id="hours">--</div>
+        <div class="label">Hours</div>
+      </div>
+      <div class="time-box">
+        <div class="time" id="minutes">--</div>
+        <div class="label">Minutes</div>
+      </div>
+    </div>
+
+    <footer>© 2026 • Knowledge compounds quietly</footer>
+  </div>
+
+  <script>
+    /* --------------------
+       COUNTDOWN
+    -------------------- */
+    const launchDate = new Date("2026-02-01T00:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const diff = launchDate - now;
+      if (diff < 0) return;
+
+      document.getElementById("days").textContent =
+        Math.floor(diff / (1000 * 60 * 60 * 24));
+      document.getElementById("hours").textContent =
+        Math.floor((diff / (1000 * 60 * 60)) % 24);
+      document.getElementById("minutes").textContent =
+        Math.floor((diff / (1000 * 60)) % 60);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
+
+    /* --------------------
+       THEME HANDLING
+    -------------------- */
+    const root = document.documentElement;
+    const toggleBtn = document.getElementById("themeToggle");
+
+    const savedTheme = localStorage.getItem("theme");
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    if (savedTheme) {
+      root.setAttribute("data-theme", savedTheme);
+    } else if (systemDark) {
+      root.setAttribute("data-theme", "dark");
+    }
+
+    updateIcon();
+
+    toggleBtn.addEventListener("click", () => {
+      const current = root.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      updateIcon();
+    });
+
+    function updateIcon() {
+      toggleBtn.textContent =
+        root.getAttribute("data-theme") === "dark" ? "☀️" : "🌙";
+    }
+  </script>
+</body>
+</html>
